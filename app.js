@@ -1,5 +1,6 @@
 let yargs=require('yargs');
 const geocode=require('./geocode/geocode')
+const weather=require('./weather/weather')
 const argv=yargs.options({
     a:{//-a
         demand: true,//to fetch data it is necessary
@@ -13,7 +14,16 @@ geocode.geocodeAddress(argv.address,(error,result)=>{
 if(error){
  console.log(error)
 }else{
-console.log(JSON.stringify(result,undefined,2))}
+    weather.getWeather(result.lat, result.long, (error,results)=>{
+        if(error){
+            console.log(error)
+        }else{
+            console.log(`${results.temperature}-${results.apparentTemperature}`)
+        }
+
+    })
+
+}
 })
 
 //%20 is used for space to fi(ll in url bar
